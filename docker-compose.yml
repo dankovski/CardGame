@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  mongo:
+    container_name: card-game-mongo
+    image: mongo
+    ports:
+      - "${MONGODB_PORT}:${MONGODB_PORT}"
+    environment:
+      MONGODB_INIT_ADMIN_USERNAME: ${MONGODB_INIT_ADMIN_USERNAME}
+      MONGODB_INIT_ADMIN_PASSWORD: ${MONGODB_INIT_ADMIN_PASSWORD}
+      MONGODB_INIT_DATABASE_NAME: ${MONGODB_INIT_DATABASE_NAME}
+    command: [--auth, --quiet]
+    volumes:
+      - mongo_db:/data/db
+      - ./database/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+    networks:
+      - app-network
+  backend:
+    container_name: card-game-backend
+    restart: always
+    command: npm run dev
+    build: ./backend
+    image: card-game-backend
+    volumes:
+      - ./backend/src:/src
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    environment:
+      MONGODB_ADMIN_USERNAME: ${MONGODB_INIT_ADMIN_USERNAME}
+      MONGODB_ADMIN_PASSWORD: ${MONGODB_INIT_ADMIN_PASSWORD}
+      MONGODB_DATABASE_NAME: ${MONGODB_INIT_DATABASE_NAME}
+      MONGODB_PORT: ${MONGODB_PORT}
+      BACKEND_PORT: ${BACKEND_PORT}
+      BACKEND_HOST: ${BACKEND_HOST}
+      MAIL_LOGIN: ${MAIL_LOGIN}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+    networks:
+      - app-network
+volumes:
+  mongo_db: {}
+
+networks:
+  app-network:
+    driver: bridge
