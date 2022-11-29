@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc --project tsconfig.json",
-    "dev": "npm run build && nodemon --legacy-watch"
+    "dev": "npm install && npm run build && nodemon --legacy-watch"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -23,7 +23,6 @@
   "type": "module",
   "devDependencies": {
     "@types/node": "^18.8.2",
-    "eslint": "^7.32.0",
     "nodemon": "^2.0.6",
     "typescript": "^4.8.3"
   }
