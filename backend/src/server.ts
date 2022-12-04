@@ -13,16 +13,17 @@ await mongoose.connect(MONGO_DB_URL, {
 	useUnifiedTopology: true
 });
 
-const app=express();
+const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(session({
+app.use(session({ 
 	secret: process.env.SECRET_KEY,
 	resave: false,
 	saveUninitialized: true,
-	name: 'sesID'
+	name: 'sesID' 
 }));
+
 app.use(cors({
 	origin: 'http://localhost:3000',
 	methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],

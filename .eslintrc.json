@@ -22,6 +22,9 @@
         "no-multiple-empty-lines": "error",
         "keyword-spacing": [2, { "before": true , "after": true }],
         "space-before-blocks": "error",
-        "object-property-newline": "error"
+        "object-property-newline": "error",
+		"object-curly-newline": ["error", { "ObjectExpression": "always", "ImportDeclaration": "never", "ExportDeclaration": "never" }],
+		"space-infix-ops": "error",
+		"object-curly-spacing": ["error", "always"]
 	}
 }
