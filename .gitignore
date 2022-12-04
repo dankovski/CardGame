@@ -119,3 +119,7 @@ dist
 # Build folder
 build
 distribution
+
+# project
+database/data/*
+package-lock.json
