@@ -29,4 +29,20 @@ router.put('/room', async (req, res) => {
 	}
 });
 
+router.get('/', async function (req, res) {
+
+	const page = parseInt(req.query.page) || 1;
+	const pageSize = parseInt(req.query.pageSize) || 10;
+
+	try {
+		res.status(200).json((await Room.find().listVisibleRooms(page, pageSize)));
+	}
+	catch {
+		return res.status(200).json({
+			message: 'no room has been created yet' 
+		});
+	}
+
+});
+
 export default router;

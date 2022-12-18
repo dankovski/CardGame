@@ -58,4 +58,29 @@ roomSchema.methods.toJSON = function () {
 	return obj;
 };
   
+roomSchema.query.listVisibleRooms = async function (page, pageSize) {
+	return await this.find({
+		'isHidden': false
+	})	.populate('roomDetails')
+		.skip((page - 1) * pageSize)
+		.limit(pageSize)
+		.then(async (rooms) => {
+			return await new Promise(async (resolve) =>{
+				const listVisibleRooms: Array<object> = [];
+				for (let index = 0; index < rooms.length; index += 1) {
+					const obj = rooms[index].toObject();
+					obj['maxPlayers'] = rooms[index].roomDetails.maxPlayers;
+					obj['numberOfPlayers'] = rooms[index].roomDetails.users?.length;
+					delete obj._id;
+					delete obj['roomDetails'];
+					delete obj['isHidden'];
+					listVisibleRooms.push(obj);
+					if (index === rooms.length - 1) {
+						resolve(listVisibleRooms);
+					}
+				}
+			});
+		});
+};
+
 export default mongoose.model('Room', roomSchema);
