@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import userRouter from './routes/user.js';
+import roomRouter from './routes/room.js';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -32,5 +33,6 @@ app.use(cors({
 }));
 
 app.use('/user', userRouter);
+app.use('/rooms', roomRouter);
 
 app.listen(PORT, '0.0.0.0');
